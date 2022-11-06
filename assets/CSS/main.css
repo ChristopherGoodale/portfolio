@@ -16,6 +16,10 @@ body {
     margin: 20px;
 }
 
+code span {
+    background-color: rgba(0, 0, 0, .55);
+}
+
 div {
     flex: auto;
 }
@@ -27,6 +31,16 @@ footer {
     max-width: 1200px;
     text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
     background-color: black;
+}
+
+h1 {
+    color: cyan;
+    opacity: 1;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+}
+
+h1 span {
+    background-color: rgba(0, 0, 0, .55);
 }
 
 h2 {
@@ -108,6 +122,15 @@ svg {
     width: 100%;
 }
 
+.bg-ftrprojs {
+    background: url(../Images/futureprojs.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
 .bg-gitmigration {
     background-image: url(../Images/Github\ background\(dark\).png);
     background-position: center;
@@ -174,6 +197,10 @@ svg {
 
 .ovh {
     overflow: hidden;
+}
+
+.tac {
+    text-align: center;
 }
 
 .wrapper {
