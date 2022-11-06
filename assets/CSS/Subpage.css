@@ -64,7 +64,7 @@ nav {
     background-color: #27A3CF;
     font-size: 15px;
     padding: 15px;
-    position: fixed left 0%;
+    position: fixed;
     top: 0;
 }
 
@@ -93,7 +93,6 @@ section {
     border-right-color: #67BF79;
     border-radius: 6px;
     padding: 0 1.5rem 1.5rem 1.5rem;
-    animation: borderglint 3s;
 }
 
 svg {
@@ -101,7 +100,7 @@ svg {
     position: relative;
 }
 
-ssss video {
+video {
     min-width: 500px;
     flex-direction: column;
     align-content: center;
