@@ -64,7 +64,7 @@ nav {
     background-color: #27A3CF;
     font-size: 15px;
     padding: 15px;
-    position: sticky;
+    position: fixed left 0%;
     top: 0;
 }
 
