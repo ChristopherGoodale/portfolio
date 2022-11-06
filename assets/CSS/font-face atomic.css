@@ -1,0 +1,11 @@
+/* font faces */
+
+@font-face {
+    font-family: "fasthands", sans-serif;
+    src: url(../assets/fonts/FastHand-lgBMV.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "GlitchInside";
+    src: url(../assets/fonts/GlitchInside-0Wjro.otf) format('opentype');
+}

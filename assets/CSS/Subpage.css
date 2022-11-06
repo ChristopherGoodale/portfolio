@@ -1,0 +1,231 @@
+/* global variables */
+
+
+/* elements */
+a {
+    font-family: "GlitchInside", sans-serif;
+}
+
+body {
+    align-items: center;
+    background: linear-gradient(#DAE61B, #DAE61B, #DAE61B, #DAE61B, #DAE61B, #DAE61B, #DAE61B, black, black, black, black);
+    background-attachment: scroll;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    margin: 20px;
+}
+
+div {
+    flex: auto;
+}
+
+footer {
+    color: cyan;
+    font-family: "GlitchInside";
+    margin: 0 auto;
+    max-width: 1200px;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+    background-color: black;
+}
+
+h2 {
+    background-color: #27A3CF;
+    border-radius: 6px;
+    color: #DAE61B;
+    margin: 0 1.5rem;
+    padding: 1 rem;
+    position: relative;
+    text-align: center;
+    top: -15px;
+}
+
+header {
+    background-color: #27A3CF;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+    margin: 1rem;
+    color: #DAE61B;
+    width: 100%;
+    font-family: "GlitchInside";
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    background: linear-gradient(#3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, black, black, black, black);
+    background-attachment: scroll;
+    max-height: 100vh;
+    overflow: auto;
+    padding: 3rem 0;
+    width: 100%;
+}
+
+nav {
+    background-color: #27A3CF;
+    font-size: 15px;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+}
+
+p {
+    color: cyan;
+    opacity: 1;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+}
+
+p.span {
+    background-color: rgba(0, 0, 0, .55);
+}
+
+pre {
+    color: cyan;
+    margin: 1.5rem;
+    padding: 1.5rem;
+    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+}
+
+section {
+    border: 3px solid;
+    border-bottom-color: #DAE61B;
+    border-left-color: #BA1C6D;
+    border-top-color: #5065CF;
+    border-right-color: #67BF79;
+    border-radius: 6px;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    animation: borderglint 3s;
+}
+
+svg {
+    justify-content: flex-end;
+    position: relative;
+}
+
+ssss video {
+    min-width: 500px;
+    flex-direction: column;
+    align-content: center;
+    border: 2px solid black;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+}
+
+
+/* classes */
+
+.bg-datadictionary {
+    background-image: url(../Images/Extended4.jpg.webp);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bg-gitmigration {
+    background-image: url(../Images/Github\ background\(dark\).png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bg-proj1 {
+    background-image: url(../Images/Project\ 1\ bg.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bg-sql {
+    background-image: url(../Images/Ftpt7a3.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bg-tableaumap {
+    background: url(../Images/Tableau\ maps\ file.webp);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bg-sadpeeposynth {
+    background: url(../Images/Sadpeeposynthwave.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    width: 100%;
+}
+
+.bgc-transparentblk {
+    background-color: rgba(0, 0, 0, .55);
+}
+
+.centered {
+    margin: 0 auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+
+.c-BA1C6D {
+    color: #BA1C6D;
+}
+
+.ova {
+    overflow: auto;
+}
+
+.ovh {
+    overflow: hidden;
+}
+
+.tac {
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 3rem;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+@font-face {
+    font-family: "fasthands", sans-serif;
+    src: url(../fonts/FastHand-lgBMV.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "GlitchInside";
+    src: url(../fonts/GlitchInside-0Wjro.otf) format('opentype');
+    font-weight: normal;
+}
+
+/* unvisited Links */
+a:link {
+    color: #BA1C6D
+}
+
+a:visited {
+    color: #BA1C6D;
+}
+
+a:hover {
+    color: #67BF79
+}
+
+a:active {
+    color: #772014
+}
