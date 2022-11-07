@@ -166,12 +166,12 @@ svg {
 }
 
 .bg-tableaumap {
-    background: url(../Images/);
+    background: url(../Images/New\ Image\ CG.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     flex: 1;
-    width: 100%;
+    width: 80%;
 }
 
 .bg-sadpeeposynth {
@@ -219,6 +219,20 @@ svg {
     max-width: 1200px;
 }
 
+/* animations */
+
+@keyframes objttltlft {
+    0% {
+        transform: skew(-45deg)
+    }
+
+    100% {
+        transform: skew(0deg)
+    }
+}
+
+/* font designs */
+
 @font-face {
     font-family: "fasthands", sans-serif;
     src: url(../fonts/FastHand-lgBMV.ttf) format('truetype');
@@ -246,6 +260,8 @@ a:hover {
 a:active {
     color: #772014;
 }
+
+code:hover {}
 
 /* webkits */
 ::-webkit-scrollbar {
