@@ -29,6 +29,10 @@ footer {
     background-color: black;
 }
 
+h1 {
+    align-items: center;
+}
+
 h2 {
     background-color: #27A3CF;
     border-radius: 6px;
@@ -38,6 +42,12 @@ h2 {
     position: relative;
     text-align: center;
     top: -15px;
+}
+
+h3 {
+    padding-top: 200px;
+    padding-right: 400px;
+    padding-left: 400px;
 }
 
 header {
@@ -86,12 +96,17 @@ pre {
 
 section {
     border: 3px solid;
-    border-bottom-color: #DAE61B;
-    border-left-color: #BA1C6D;
-    border-top-color: #5065CF;
-    border-right-color: #67BF79;
+    border-color: #27A3CF;
+    box-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
     border-radius: 6px;
     padding: 0 1.5rem 1.5rem 1.5rem;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 200px;
+    padding-right: 400px;
+    padding-left: 400px;
+    padding-bottom: auto;
 }
 
 svg {
@@ -107,6 +122,13 @@ video {
     box-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
 }
 
+
+/* reset classes */
+
+.bdrc-none {
+    border-color: black;
+    opacity: 0;
+}
 
 /* classes */
 
@@ -179,6 +201,10 @@ video {
     color: #BA1C6D;
 }
 
+.ma {
+    margin: auto;
+}
+
 .ova {
     overflow: auto;
 }
@@ -226,4 +252,9 @@ a:hover {
 
 a:active {
     color: #772014
+}
+
+/* webkits */
+::-webkit-scrollbar {
+    display: none;
 }
