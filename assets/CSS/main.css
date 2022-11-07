@@ -166,12 +166,12 @@ svg {
 }
 
 .bg-tableaumap {
-    background: url(../Images/New\ Image\ CG.jpg);
-    background-position: center;
+    background: url(../Images/New\ Image\ CG.png);
+    background-position: 0 -40px;
     background-repeat: no-repeat;
     background-size: cover;
     flex: 1;
-    width: 80%;
+    width: 100%;
 }
 
 .bg-sadpeeposynth {
