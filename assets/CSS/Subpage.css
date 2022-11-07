@@ -61,6 +61,11 @@ header {
     text-align: center;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+
 main {
     background: linear-gradient(#3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, #3F3E86, black, black, black, black);
     background-attachment: scroll;
