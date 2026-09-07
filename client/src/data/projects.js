@@ -17,4 +17,13 @@ export const projects = [
     link: 'https://christophergoodale.github.io/prediction_arbitrage_bot/',
     repo: 'https://github.com/ChristopherGoodale/prediction_arbitrage_bot',
   },
+  {
+    title: 'Habit / Task Tracker',
+    tagline: 'Full-stack CRUD, no framework magic',
+    description:
+      'Project #1 in a C# / Go / React skill-building sequence: a CRUD habit/task tracker with a Go backend and a React frontend, backed by Postgres. No auth, no real-time — the goal is to feel the full request → API → DB → UI loop end to end with plain net/http, plain SQL, and plain fetch.',
+    tags: ['Go', 'React', 'Postgres'],
+    link: 'https://github.com/ChristopherGoodale/habit_task_tracker',
+    repo: 'https://github.com/ChristopherGoodale/habit_task_tracker',
+  },
 ]

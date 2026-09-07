@@ -1,5 +1,6 @@
 export default function ProjectCard({ project }) {
-  const { title, tagline, description, tags, link } = project
+  const { title, tagline, description, tags, link, repo } = project
+  const isRepoOnly = link === repo
 
   return (
     <a
@@ -25,7 +26,9 @@ export default function ProjectCard({ project }) {
             </span>
           ))}
         </div>
-        <span className="project-card__cta">View live demo →</span>
+        <span className="project-card__cta">
+          {isRepoOnly ? 'View on GitHub →' : 'View live demo →'}
+        </span>
       </div>
     </a>
   )
