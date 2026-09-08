@@ -73,9 +73,48 @@ a {
 }
 
 .hero__role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
   font-size: 1.25rem;
-  color: var(--text-dim);
   margin: 0 0 20px;
+}
+
+.hero__role-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero__role-sep {
+  color: var(--border);
+}
+
+.hero__role-button {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  font: inherit;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.hero__role-button:hover,
+.hero__role-button:focus-visible {
+  color: var(--text);
+  outline: none;
+}
+
+.hero__role-button[data-active] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.hero__role-button[aria-pressed='true'] {
+  font-weight: 600;
 }
 
 .hero__blurb {
@@ -161,7 +200,7 @@ a {
   padding: 20px;
   cursor: pointer;
   transition: border-color 200ms ease, transform 200ms ease,
-    box-shadow 200ms ease;
+    box-shadow 200ms ease, opacity 200ms ease;
 }
 
 .project-card:hover,
@@ -170,6 +209,15 @@ a {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.4);
   outline: none;
+}
+
+.project-card[data-dimmed] {
+  opacity: 0.3;
+}
+
+.project-card[data-dimmed]:hover,
+.project-card[data-dimmed]:focus-visible {
+  opacity: 1;
 }
 
 .project-card__head {

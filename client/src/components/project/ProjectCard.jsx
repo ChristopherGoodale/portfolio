@@ -1,10 +1,11 @@
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project, isDimmed }) {
   const { title, tagline, description, tags, link, repo } = project
   const isRepoOnly = link === repo
 
   return (
     <a
       className="project-card"
+      data-dimmed={isDimmed || undefined}
       href={link}
       target="_blank"
       rel="noopener noreferrer"
