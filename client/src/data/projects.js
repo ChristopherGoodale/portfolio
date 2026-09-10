@@ -31,4 +31,14 @@ export const projects = [
     link: 'https://github.com/ChristopherGoodale/habit_task_tracker',
     repo: 'https://github.com/ChristopherGoodale/habit_task_tracker',
   },
+  {
+    title: 'Sheets & Drive MCP Server',
+    tagline: 'Giving Claude direct hands on Google Workspace',
+    description:
+      'A Model Context Protocol (MCP) server that gives Claude typed, tool-level access to Google Drive and Sheets — list, search, and share files, and read/write/append/create spreadsheets — authenticated through an isolated service account so AI-driven actions stay scoped to explicitly shared files. Turns spreadsheet reporting and data entry into a conversational workflow, and doubles as a working example of wiring any external API up to an LLM as a scoped MCP tool.',
+    tags: ['MCP', 'Google API', 'Node.js'],
+    categories: ['Engineer'],
+    link: 'https://github.com/ChristopherGoodale/sheets_drive_mcp',
+    repo: 'https://github.com/ChristopherGoodale/sheets_drive_mcp',
+  },
 ]
