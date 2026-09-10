@@ -46,6 +46,20 @@ main {
   padding: 0 24px;
 }
 
+@media (min-width: 1200px) {
+  main {
+    max-width: 1140px;
+    padding: 0 32px;
+  }
+}
+
+@media (min-width: 1600px) {
+  main {
+    max-width: 1320px;
+    padding: 0 40px;
+  }
+}
+
 h1,
 h2,
 h3 {
@@ -72,26 +86,24 @@ a {
   margin: 0 0 8px;
 }
 
-.hero__role {
+.category-filter {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  font-size: 1.25rem;
-  margin: 0 0 20px;
 }
 
-.hero__role-item {
+.category-filter__item {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.hero__role-sep {
+.category-filter__sep {
   color: var(--border);
 }
 
-.hero__role-button {
+.category-filter__button {
   background: none;
   border: none;
   padding: 2px 0;
@@ -102,19 +114,29 @@ a {
   transition: color 150ms ease, border-color 150ms ease;
 }
 
-.hero__role-button:hover,
-.hero__role-button:focus-visible {
+.category-filter__button:hover,
+.category-filter__button:focus-visible {
   color: var(--text);
   outline: none;
 }
 
-.hero__role-button[data-active] {
+.category-filter__button[data-active] {
   color: var(--accent);
   border-color: var(--accent);
 }
 
-.hero__role-button[aria-pressed='true'] {
+.category-filter__button[aria-pressed='true'] {
   font-weight: 600;
+}
+
+.hero__role {
+  font-size: 1.25rem;
+  margin: 0 0 20px;
+}
+
+.projects__filter {
+  font-size: 0.95rem;
+  margin: 8px 0 0;
 }
 
 .hero__blurb {

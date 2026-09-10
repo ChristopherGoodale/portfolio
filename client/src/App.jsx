@@ -22,7 +22,12 @@ export default function App() {
         onCategoryToggle={toggleCategory}
       />
       <About />
-      <Projects activeCategory={activeCategory} />
+      <Projects
+        activeCategory={activeCategory}
+        pinnedCategory={pinnedCategory}
+        onCategoryHover={setHoveredCategory}
+        onCategoryToggle={toggleCategory}
+      />
       <Footer />
     </main>
   )

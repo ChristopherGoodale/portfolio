@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../../data/projects.js'
+import CategoryFilter from '../project/CategoryFilter.jsx'
 
 export default function Hero({
   activeCategory,
@@ -10,37 +10,16 @@ export default function Hero({
     <section className="hero" id="top">
       <p className="hero__eyebrow">Hi, I'm</p>
       <h1 className="hero__name">Christopher Goodale</h1>
-      <div
+      <CategoryFilter
+        activeCategory={activeCategory}
+        pinnedCategory={pinnedCategory}
+        onCategoryHover={onCategoryHover}
+        onCategoryToggle={onCategoryToggle}
         className="hero__role"
-        role="group"
-        aria-label="Filter projects by role"
-      >
-        {CATEGORIES.map((category, index) => (
-          <span key={category} className="hero__role-item">
-            {index > 0 && (
-              <span className="hero__role-sep" aria-hidden="true">
-                |
-              </span>
-            )}
-            <button
-              type="button"
-              className="hero__role-button"
-              aria-pressed={pinnedCategory === category}
-              data-active={activeCategory === category || undefined}
-              onMouseEnter={() => onCategoryHover(category)}
-              onMouseLeave={() => onCategoryHover(null)}
-              onFocus={() => onCategoryHover(category)}
-              onBlur={() => onCategoryHover(null)}
-              onClick={() => onCategoryToggle(category)}
-            >
-              {category}
-            </button>
-          </span>
-        ))}
-      </div>
+      />
       <p className="hero__blurb">
         I build tools that turn messy processes — job applications, market
-        data, workflows — into repeatable, data-driven systems.
+        data, workflows — into repeatable, data-driven solutions.
       </p>
       <div className="hero__links">
         <a className="button button--primary" href="#projects">
