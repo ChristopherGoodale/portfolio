@@ -41,4 +41,14 @@ export const projects = [
     link: 'https://github.com/ChristopherGoodale/sheets_drive_mcp',
     repo: 'https://github.com/ChristopherGoodale/sheets_drive_mcp',
   },
+  {
+    title: 'Three-Statement Financial Model',
+    tagline: 'SEC filings to a live, audit-linked Google Sheets model',
+    description:
+      'A reproducible Python pipeline that pulls a public company’s financials (SiteOne Landscape Supply, NYSE: SITE) straight from SEC EDGAR XBRL, validates every accounting identity in code, and renders a Google Sheets workbook where every subtotal, check, driver, and forecast line is a live formula with full provenance back to the original filing — replacing manual, error-prone model-building with a repeatable, auditable pipeline.',
+    tags: ['Python', 'SEC EDGAR', 'Google Sheets'],
+    categories: ['Finance', 'Data Specialist'],
+    link: 'https://github.com/ChristopherGoodale/three_statement_model',
+    repo: 'https://github.com/ChristopherGoodale/three_statement_model',
+  },
 ]
