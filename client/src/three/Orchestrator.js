@@ -18,11 +18,17 @@ export default class Orchestrator {
     this.stage = new Stage(this.scene, canvas, this.camera, this.sizes, readThemeColors())
     this.renderer = new Renderer(canvas, this.sizes, this.scene, this.camera)
 
-    this.clock = new THREE.Clock()
+    // Timer over the deprecated Clock: also guards against a huge delta
+    // spike when the tab is backgrounded and resumed (Page Visibility
+    // API), which matters here since navigating away from Home and back
+    // is now a normal part of routing, not just a one-off tab switch.
+    this.clock = new THREE.Timer()
+    this.clock.connect(document)
 
     this._unwatchColorScheme = watchColorScheme((colors) => this.stage.setColors(colors))
 
     this._animate = () => {
+      this.clock.update()
       const delta = this.clock.getDelta()
       this.camera.update()
       this.stage.update(delta)
@@ -33,6 +39,8 @@ export default class Orchestrator {
 
   destroy() {
     this.renderer.instance.setAnimationLoop(null)
+    this.clock.disconnect()
+    this.clock.dispose()
     this._unwatchColorScheme()
     this.stage.destroy()
     this.camera.destroy()

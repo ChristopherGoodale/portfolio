@@ -1,36 +1,14 @@
-import { useState } from 'react'
-import Hero from './components/sections/Hero.jsx'
-import About from './components/sections/About.jsx'
-import Projects from './components/sections/Projects.jsx'
-import Footer from './components/layout/Footer.jsx'
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home.jsx'
+import ProjectsPage from './pages/ProjectsPage.jsx'
 
 export default function App() {
-  const [pinnedCategory, setPinnedCategory] = useState(null)
-  const [hoveredCategory, setHoveredCategory] = useState(null)
-  const activeCategory = hoveredCategory ?? pinnedCategory
-
-  function toggleCategory(category) {
-    setPinnedCategory((current) => (current === category ? null : category))
-  }
-
   return (
     <main>
-      <Hero
-        activeCategory={activeCategory}
-        pinnedCategory={pinnedCategory}
-        onCategoryHover={setHoveredCategory}
-        onCategoryToggle={toggleCategory}
-      />
-      <div className="page-content">
-        <About />
-        <Projects
-          activeCategory={activeCategory}
-          pinnedCategory={pinnedCategory}
-          onCategoryHover={setHoveredCategory}
-          onCategoryToggle={toggleCategory}
-        />
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+      </Routes>
     </main>
   )
 }

@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import { projects } from '../../data/projects.js'
 import ProjectCard from '../project/ProjectCard.jsx'
 import CategoryFilter from '../project/CategoryFilter.jsx'
 
-export default function Projects({
-  activeCategory,
-  pinnedCategory,
-  onCategoryHover,
-  onCategoryToggle,
-}) {
+export default function Projects() {
+  const [pinnedCategory, setPinnedCategory] = useState(null)
+  const [hoveredCategory, setHoveredCategory] = useState(null)
+  const activeCategory = hoveredCategory ?? pinnedCategory
+
+  function toggleCategory(category) {
+    setPinnedCategory((current) => (current === category ? null : category))
+  }
+
   return (
     <section className="projects" id="projects">
       <h2>Featured Projects</h2>
@@ -15,8 +19,8 @@ export default function Projects({
       <CategoryFilter
         activeCategory={activeCategory}
         pinnedCategory={pinnedCategory}
-        onCategoryHover={onCategoryHover}
-        onCategoryToggle={onCategoryToggle}
+        onCategoryHover={setHoveredCategory}
+        onCategoryToggle={toggleCategory}
         className="projects__filter"
       />
       <div className="projects__grid">

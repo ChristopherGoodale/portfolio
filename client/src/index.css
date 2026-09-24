@@ -51,8 +51,9 @@ main {
 
 /* Fixed, full-viewport canvas for the Hero's 3D wave-grid background.
    Sits behind everything: .hero is transparent so it shows through, and
-   .page-content (About/Projects/Footer) has an opaque full-bleed
-   background above it, so the grid disappears once scrolled past Hero. */
+   .page-content (wrapping Footer on the Home page) has an opaque
+   full-bleed background above it, so the grid disappears once scrolled
+   past Hero. About/Contact are slide-up cards now, not page content. */
 .wave-grid-canvas {
   position: fixed;
   inset: 0;
@@ -274,11 +275,11 @@ a {
   border-color: var(--accent);
 }
 
-/* About/Projects/Footer live inside the full-bleed .page-content, so
-   each re-establishes its own centered column (mirrors main's own
-   max-width ladder, since main no longer constrains their width). */
-.about,
-.projects,
+/* Footer re-establishes its own centered column, because on Home it
+   lives inside the full-bleed .page-content (which breaks out of
+   main's max-width). On AboutPage/ProjectsPage, Footer is a plain
+   child of main again, so this is redundant-but-harmless there -
+   main's own max-width ladder already centers it. */
 .footer {
   max-width: 960px;
   margin-left: auto;
@@ -288,8 +289,6 @@ a {
 }
 
 @media (min-width: 1200px) {
-  .about,
-  .projects,
   .footer {
     max-width: 1140px;
     padding-left: 32px;
@@ -298,8 +297,6 @@ a {
 }
 
 @media (min-width: 1600px) {
-  .about,
-  .projects,
   .footer {
     max-width: 1320px;
     padding-left: 40px;
@@ -307,23 +304,28 @@ a {
   }
 }
 
-/* About */
-.about {
-  padding-top: 48px;
-  padding-bottom: 48px;
-  border-top: 1px solid var(--border);
+/* Projects is now the top of its own page (reached via BackLink/Hero
+   navigation, not scrolled to from a preceding section), so it relies
+   on main's own centering directly and doesn't need a divider border
+   above it. (About went back to being a slide-up card - see
+   .about-card below - so BackLink/this reasoning no longer applies to
+   it specifically, only to Projects.) */
+.page-back {
+  display: inline-block;
+  margin: 32px 0 0;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.about p {
-  color: var(--text-dim);
-  max-width: 680px;
+.page-back:hover {
+  color: var(--accent);
 }
 
 /* Projects */
 .projects {
-  padding-top: 48px;
+  padding-top: 24px;
   padding-bottom: 80px;
-  border-top: 1px solid var(--border);
 }
 
 .projects__hint {
@@ -475,61 +477,67 @@ a {
   color: var(--accent);
 }
 
-/* Contact card: slides up from off-screen bottom to rest at the
-   bottom-right, instead of a centered modal, so it never covers the
-   Hero copy on the left. The scrim has no visible dimming - it only
-   exists to catch clicks outside the card and close it. */
-.contact-scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  background: transparent;
-}
-
-.contact-card {
+/* Slide-up glass panel (shared shell for the About and Contact cards):
+   slides up from off-screen bottom to rest at the right, filling most
+   of the viewport height rather than a small corner widget - `top` and
+   `bottom` are both set so the height stretches to fill the space
+   between them, growing with the viewport instead of a fixed number.
+   Dismissing on an outside click is handled in JS via a document
+   mousedown listener (SlideUpPanel.jsx), not a full-screen click-catching
+   div - a div like that would sit above the whole page and intercept
+   clicks meant for Hero's own buttons underneath it. */
+.slide-panel {
   position: fixed;
   z-index: 100;
-  right: 24px;
-  bottom: 24px;
-  width: 100%;
-  max-width: 360px;
-  max-height: calc(100vh - 48px);
+  top: 64px;
+  right: 64px;
+  bottom: 64px;
+  width: min(760px, 46vw);
   overflow-y: auto;
-  /* Translucent glass: the wave-grid animation stays visible (blurred)
-     through the card instead of being hidden behind a solid panel. */
-  background: color-mix(in srgb, var(--bg-soft) 55%, transparent);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  /* Embossed glass: a strong blur so the wave-grid animation reads as
+     frosted motion rather than a sharp image, a soft diagonal sheen
+     (the gradient layer) suggesting light catching the pane, and inset
+     highlight lines along the top/left edges - the two together are
+     what sell "a pane of glass" rather than just "a translucent box". */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 45%),
+    color-mix(in srgb, var(--bg-soft) 55%, transparent);
+  backdrop-filter: blur(36px) saturate(180%);
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-  border-radius: 16px;
-  padding: 28px;
-  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.5);
-  transform: translateY(calc(100% + 48px));
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 1px 0 0 rgba(255, 255, 255, 0.18);
+  transform: translateY(calc(100% + 96px));
   transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-card--open {
+.slide-panel--open {
   transform: translateY(0);
 }
 
 /* Browsers without backdrop-filter support get a solid panel instead of
    a see-through one with no blur (which would be unreadable). */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .contact-card {
+  .slide-panel {
     background: var(--bg-soft);
   }
 }
 
-@media (max-width: 480px) {
-  .contact-card {
-    right: 12px;
-    left: 12px;
-    bottom: 12px;
-    max-width: none;
+@media (max-width: 700px) {
+  .slide-panel {
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
+    padding: 28px;
   }
 }
 
-.contact-card__close {
+.slide-panel__close {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -547,13 +555,25 @@ a {
   cursor: pointer;
 }
 
-.contact-card__close:hover,
-.contact-card__close:focus-visible {
+.slide-panel__close:hover,
+.slide-panel__close:focus-visible {
   color: var(--text);
   background: var(--bg);
   outline: none;
 }
 
+/* About card content */
+.about-card__title {
+  font-size: 1.3rem;
+  margin: 0 0 16px;
+}
+
+.about-card__body {
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* Contact card content */
 .contact-card__header {
   display: flex;
   align-items: center;
@@ -603,7 +623,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-card {
+  .slide-panel {
     transition: none;
   }
 }
