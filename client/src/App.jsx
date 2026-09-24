@@ -21,14 +21,16 @@ export default function App() {
         onCategoryHover={setHoveredCategory}
         onCategoryToggle={toggleCategory}
       />
-      <About />
-      <Projects
-        activeCategory={activeCategory}
-        pinnedCategory={pinnedCategory}
-        onCategoryHover={setHoveredCategory}
-        onCategoryToggle={toggleCategory}
-      />
-      <Footer />
+      <div className="page-content">
+        <About />
+        <Projects
+          activeCategory={activeCategory}
+          pinnedCategory={pinnedCategory}
+          onCategoryHover={setHoveredCategory}
+          onCategoryToggle={toggleCategory}
+        />
+        <Footer />
+      </div>
     </main>
   )
 }

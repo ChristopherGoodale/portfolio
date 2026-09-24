@@ -34,6 +34,9 @@ body,
 
 body {
   margin: 0;
+  /* .hero's 100vw breakout can overflow by the scrollbar's width; clip it
+     rather than let a stray horizontal scrollbar appear. */
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -44,6 +47,33 @@ main {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* Fixed, full-viewport canvas for the Hero's 3D wave-grid background.
+   Sits behind everything: .hero is transparent so it shows through, and
+   .page-content (About/Projects/Footer) has an opaque full-bleed
+   background above it, so the grid disappears once scrolled past Hero. */
+.wave-grid-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  display: block;
+}
+
+/* Full-bleed opaque backing for everything after Hero. A plain
+   max-width box (like `main`'s own) only paints its own narrower
+   column, leaving the page margins on either side transparent to the
+   fixed canvas beneath - this breaks out to the full viewport width
+   first (same technique as .hero) so it occludes edge-to-edge. */
+.page-content {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 @media (min-width: 1200px) {
@@ -72,7 +102,66 @@ a {
 
 /* Hero */
 .hero {
-  padding: 96px 0 64px;
+  /* Break out of main's max-width column to full viewport width and let
+     the wave-grid canvas show through (main's own background would
+     otherwise cover it). position/z-index are needed too: a plain
+     static-flow box paints *below* a `position: fixed` element
+     regardless of DOM order, so without its own stacking context
+     Hero's text would render behind the canvas instead of over it. */
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 96px 24px 64px;
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .hero {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* Re-applies main's max-width ladder so the hero copy lands in the same
+   column it always has, now that .hero itself is full-bleed. Everything
+   in here is pointer-events: none by default so pointer moves reach the
+   canvas underneath (driving the wave effect); only real interactive
+   controls opt back in. */
+.hero__inner {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+@media (min-width: 1200px) {
+  .hero__inner {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .hero__inner {
+    max-width: 1320px;
+  }
+}
+
+.hero__inner a,
+.hero__inner button {
+  pointer-events: auto;
 }
 
 .hero__eyebrow {
@@ -155,8 +244,12 @@ a {
   padding: 10px 20px;
   border-radius: 8px;
   text-decoration: none;
+  font: inherit;
   font-weight: 600;
+  color: inherit;
+  background: none;
   border: 1px solid transparent;
+  cursor: pointer;
   transition: transform 150ms ease, background 150ms ease;
 }
 
@@ -181,9 +274,43 @@ a {
   border-color: var(--accent);
 }
 
+/* About/Projects/Footer live inside the full-bleed .page-content, so
+   each re-establishes its own centered column (mirrors main's own
+   max-width ladder, since main no longer constrains their width). */
+.about,
+.projects,
+.footer {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 1200px) {
+  .about,
+  .projects,
+  .footer {
+    max-width: 1140px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .about,
+  .projects,
+  .footer {
+    max-width: 1320px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
 /* About */
 .about {
-  padding: 48px 0;
+  padding-top: 48px;
+  padding-bottom: 48px;
   border-top: 1px solid var(--border);
 }
 
@@ -194,7 +321,8 @@ a {
 
 /* Projects */
 .projects {
-  padding: 48px 0 80px;
+  padding-top: 48px;
+  padding-bottom: 80px;
   border-top: 1px solid var(--border);
 }
 
@@ -332,7 +460,8 @@ a {
 
 /* Footer */
 .footer {
-  padding: 24px 0 48px;
+  padding-top: 24px;
+  padding-bottom: 48px;
   color: var(--text-dim);
   font-size: 0.85rem;
   border-top: 1px solid var(--border);
@@ -344,4 +473,137 @@ a {
 
 .footer a:hover {
   color: var(--accent);
+}
+
+/* Contact card: slides up from off-screen bottom to rest at the
+   bottom-right, instead of a centered modal, so it never covers the
+   Hero copy on the left. The scrim has no visible dimming - it only
+   exists to catch clicks outside the card and close it. */
+.contact-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: transparent;
+}
+
+.contact-card {
+  position: fixed;
+  z-index: 100;
+  right: 24px;
+  bottom: 24px;
+  width: 100%;
+  max-width: 360px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  /* Translucent glass: the wave-grid animation stays visible (blurred)
+     through the card instead of being hidden behind a solid panel. */
+  background: color-mix(in srgb, var(--bg-soft) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.5);
+  transform: translateY(calc(100% + 48px));
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-card--open {
+  transform: translateY(0);
+}
+
+/* Browsers without backdrop-filter support get a solid panel instead of
+   a see-through one with no blur (which would be unreadable). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .contact-card {
+    background: var(--bg-soft);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-card {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    max-width: none;
+  }
+}
+
+.contact-card__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.contact-card__close:hover,
+.contact-card__close:focus-visible {
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+}
+
+.contact-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contact-card__photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.contact-card__name {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.contact-card__rows {
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-card__row dt {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 2px;
+}
+
+.contact-card__row dd {
+  margin: 0;
+}
+
+.contact-card__row a {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-card__row a:hover {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-card {
+    transition: none;
+  }
 }

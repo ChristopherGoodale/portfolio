@@ -1,0 +1,26 @@
+# 2026-09-24 - LinkedIn Link + Contact Card
+
+## The "Why" (Design Decisions)
+
+Added a LinkedIn link next to the existing GitHub link, and a "Contact" trigger that opens a modal card with a photo, phone number, and two emails (personal for job inquiries, `axiom.automation.llc@gmail.com` for business).
+
+**Modal portaled to `document.body`, not inline in Hero.** Same reasoning as `WaveGridBackground` (see the previous guide entry): the card needs to sit above literally everything, including the fixed wave-grid canvas, regardless of where `<ContactCard/>` happens to be declared in the JSX tree. `z-index: 100` on the overlay comfortably clears the canvas (`0`) and Hero/page-content (`1`).
+
+**Phone number: lightly obfuscated, not plain text.** This is a public repo whose built JS ships as plain client-side source — a bare `\d{3}-\d{3}-\d{4}`-shaped string is the easiest thing for an automated scraper to regex out of a bundle. The user explicitly chose "lightly obfuscated" over plain text or omitting the number entirely, understanding this deters simple static scrapers but not a determined one. The digits are stored reversed as a module constant and only reassembled into the forward-order string inside a `useEffect` that runs when the modal opens - so the plain digit sequence never sits as a literal string anywhere in the source, and doesn't even exist in memory until a user actually opens the card. Verified post-build: `grep` for the plain-order digit string over the built bundle in `dist/assets/*.js` returns nothing; only the reversed constant is present. The two email addresses were left as plain `mailto:` links per the original request - only the phone number's exposure was in question.
+
+**`.button` needed a reset it never needed before.** Every existing CTA element with the `.button` class was an `<a>` tag, which already inherits color/font and has no default background via this stylesheet's global `a { color: inherit; }` rule. The Contact trigger is a `<button>` - browsers give buttons their own default font, background, and border independent of inherited body styles, so without a reset the Contact button would have visually mismatched the GitHub/LinkedIn buttons next to it (wrong font, a native grey fill peeking through `.button--ghost`'s border-only look). Fixed once, generically, on the shared `.button` rule (`font: inherit; color: inherit; background: none; cursor: pointer;`) rather than a Contact-specific override, so any future `<button className="button">` gets it for free.
+
+**Photo: cropped and compressed at commit time, not served raw.** The source photo was a 3.2MB, 3456x5184 portrait - correct for printing, wasteful for a 72px circular avatar. Cropped to a square around the face/shoulders and resized to 480x480 (2x-ish for retina at the display size) via a one-off `sharp` script, landing at ~41KB. This isn't a build-time pipeline; it's a manual step performed once before committing the asset, since the source is a single static photo that doesn't change per-build.
+
+## Core Concepts
+
+**Reassemble-on-use instead of build-time obfuscation.** True encryption/obfuscation of a string that must eventually be readable by a browser is not meaningful - anything the client can decode, so can a scraper reading the same JS. What "lightly obfuscated" buys here is narrower and more honest: defeating *pattern-matching* scrapers that grep bundles for phone-number-shaped literals, without pretending to defeat a scraper that actually executes the code. Storing the reversed string as a constant and calling `.split('').reverse().join('')` inside an effect is sufficient for that narrower goal and no more.
+
+**Portal-based modals reuse the same pattern as the 3D background.** `WaveGridBackground` and `ContactCard` both use `createPortal(..., document.body)` for the same underlying reason: an element that needs to visually escape its DOM position's stacking/layout context is portaled directly to `body`, rather than fighting `position: fixed` + z-index math against arbitrary ancestors.
+
+## Implementation Breakdown
+
+- `client/src/components/contact/ContactCard.jsx` - self-contained trigger + modal: owns its own `isOpen` state, renders the `<button>` trigger inline (styled via the shared `.button button--ghost` classes) and conditionally portals the overlay/card. Escape-to-close via a `keydown` listener added only while open; focus moves to the close button on open and back to the trigger on close. Backdrop click closes (via a click handler on `.contact-overlay` with `stopPropagation()` on the card itself so clicks inside don't bubble to the backdrop).
+- `client/src/assets/profile-photo.jpg` - the cropped/compressed avatar, imported as a normal Vite asset (hashed filename in the production build).
+- `client/src/components/sections/Hero.jsx` - renders `<ContactCard/>` as the fourth item in `.hero__links`, and a plain `<a>` for the new LinkedIn CTA alongside the existing GitHub one.
+- `client/src/index.css` - `.contact-overlay`/`.contact-card` and its sub-elements; the `.hero__inner a, .hero__inner button` pointer-events exception (broadened from the previous `.category-filter__button`-specific rule now that a plain `<button>` needs the same treatment); the `.button` base-rule reset described above.
