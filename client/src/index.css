@@ -43,17 +43,25 @@ body {
   line-height: 1.5;
 }
 
+/* min-height + flex column so Footer sits flush against the end of the
+   page content instead of leaving a dangling gap of empty space below
+   short content before it - it still scrolls normally past 100vh once
+   real content (e.g. the projects grid on a narrow viewport) needs
+   more room, nothing here clips or force-fits content. */
 main {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Fixed, full-viewport canvas for the Hero's 3D wave-grid background.
-   Sits behind everything: .hero is transparent so it shows through, and
-   .page-content (wrapping Footer on the Home page) has an opaque
-   full-bleed background above it, so the grid disappears once scrolled
-   past Hero. About/Contact are slide-up cards now, not page content. */
+   Sits behind everything: .hero is transparent so it shows through.
+   The landing page (Hero) is locked to exactly one viewport, so the
+   grid is always visible there; ProjectsPage's plain-flow Footer
+   scrolls past it on that page instead. */
 .wave-grid-canvas {
   position: fixed;
   inset: 0;
@@ -61,20 +69,6 @@ main {
   height: 100vh;
   z-index: 0;
   display: block;
-}
-
-/* Full-bleed opaque backing for everything after Hero. A plain
-   max-width box (like `main`'s own) only paints its own narrower
-   column, leaving the page margins on either side transparent to the
-   fixed canvas beneath - this breaks out to the full viewport width
-   first (same technique as .hero) so it occludes edge-to-edge. */
-.page-content {
-  position: relative;
-  z-index: 1;
-  background: var(--bg);
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
 }
 
 @media (min-width: 1200px) {
@@ -108,14 +102,20 @@ a {
      otherwise cover it). position/z-index are needed too: a plain
      static-flow box paints *below* a `position: fixed` element
      regardless of DOM order, so without its own stacking context
-     Hero's text would render behind the canvas instead of over it. */
+     Hero's text would render behind the canvas instead of over it.
+     height (not min-height) + overflow: hidden locks the landing page
+     to exactly one viewport - Footer lives inside here now (pinned to
+     the bottom, see .hero .footer below) instead of in page flow after
+     Hero, which used to push the page taller than 100vh and produce a
+     scrollbar. */
   position: relative;
   z-index: 1;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   background: transparent;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -276,10 +276,10 @@ a {
 }
 
 /* Footer re-establishes its own centered column, because on Home it
-   lives inside the full-bleed .page-content (which breaks out of
-   main's max-width). On AboutPage/ProjectsPage, Footer is a plain
+   lives inside the full-bleed .hero (see .hero .footer below), which
+   breaks out of main's max-width. On ProjectsPage, Footer is a plain
    child of main again, so this is redundant-but-harmless there -
-   main's own max-width ladder already centers it. */
+   main's own max-width already centers it. */
 .footer {
   max-width: 960px;
   margin-left: auto;
@@ -324,6 +324,7 @@ a {
 
 /* Projects */
 .projects {
+  flex: 1 0 auto;
   padding-top: 24px;
   padding-bottom: 80px;
 }
@@ -475,6 +476,19 @@ a {
 
 .footer a:hover {
   color: var(--accent);
+}
+
+/* On the landing page, Footer is rendered inside .hero (see Hero.jsx)
+   so it counts against the same 100vh instead of extending the page.
+   Pinned to the section's bottom edge and squished down to a slim bar,
+   out of the flow that centers .hero__inner. */
+.hero .footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 12px;
+  padding-bottom: 16px;
 }
 
 /* Slide-up glass panel (shared shell for the About and Contact cards):

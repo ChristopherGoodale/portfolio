@@ -5,6 +5,7 @@ import WaveGridBackground from '../three/WaveGridBackground.jsx'
 import SlideUpPanel from '../common/SlideUpPanel.jsx'
 import AboutCard from '../about/AboutCard.jsx'
 import ContactCard from '../contact/ContactCard.jsx'
+import Footer from '../layout/Footer.jsx'
 
 export default function Hero() {
   // Which of the two slide-up cards is open, if any. Owned here (rather
@@ -22,8 +23,8 @@ export default function Hero() {
         <h1 className="hero__name">Christopher Goodale</h1>
         <p className="hero__role">{CATEGORIES.join(' | ')}</p>
         <p className="hero__blurb">
-          I build tools that turn messy processes — job applications, market
-          data, workflows — into repeatable, data-driven solutions.
+          I build tools that turn messy processes (job applications, market
+          data, workflows) into repeatable, data-driven solutions.
         </p>
         <div className="hero__links">
           <Link className="button button--primary" to="/projects">
@@ -81,6 +82,8 @@ export default function Hero() {
       >
         <ContactCard />
       </SlideUpPanel>
+
+      <Footer />
     </section>
   )
 }
