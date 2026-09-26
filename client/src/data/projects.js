@@ -1,6 +1,29 @@
 export const CATEGORIES = ['Data Specialist', 'Finance', 'Engineer']
 
-export const projects = [
+const snapshotModules = import.meta.glob('../assets/*_snapshot.png', {
+  eager: true,
+  import: 'default',
+})
+
+// "Sheets & Drive MCP Server" -> "sheets_drive_mcp_server", matching
+// sheets_drive_mcp_server_snapshot.png. Strips punctuation, collapses
+// spaces/hyphens to a single underscore.
+function slugify(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s-]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+}
+
+const snapshotsBySlug = Object.fromEntries(
+  Object.entries(snapshotModules).map(([path, url]) => {
+    const slug = path.split('/').pop().replace(/_snapshot\.png$/, '')
+    return [slug, url]
+  }),
+)
+
+const rawProjects = [
   {
     title: 'Resume Generator',
     tagline: 'AI-assisted, job-tailored resume pipeline',
@@ -52,3 +75,11 @@ export const projects = [
     repo: 'https://github.com/ChristopherGoodale/three_statement_model',
   },
 ]
+
+// Projects with no matching asset (e.g. Three-Statement Financial Model)
+// get snapshot: undefined, and ProjectCard falls back to its original
+// always-expandable layout for them.
+export const projects = rawProjects.map((project) => ({
+  ...project,
+  snapshot: snapshotsBySlug[slugify(project.title)],
+}))
