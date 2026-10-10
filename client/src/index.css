@@ -2,9 +2,10 @@
   --bg: #0f1115;
   --bg-soft: #171a21;
   --text: #eef0f4;
-  --text-dim: #9aa2b1;
+  --text-dim: #ffffff;
   --accent: #6ee7b7;
   --accent-dim: #3fae86;
+  --wave-accent: #2f7f62;
   --border: #262a34;
   color-scheme: dark;
 }
@@ -14,9 +15,10 @@
     --bg: #fafafa;
     --bg-soft: #ffffff;
     --text: #16181d;
-    --text-dim: #565d6b;
+    --text-dim: #000000;
     --accent: #0f9d68;
     --accent-dim: #0c7a52;
+    --wave-accent: #0f9d68;
     --border: #e4e6ea;
     color-scheme: light;
   }
@@ -59,9 +61,8 @@ main {
 
 /* Fixed, full-viewport canvas for the Hero's 3D wave-grid background.
    Sits behind everything: .hero is transparent so it shows through.
-   The landing page (Hero) is locked to exactly one viewport, so the
-   grid is always visible there; ProjectsPage's plain-flow Footer
-   scrolls past it on that page instead. */
+   The landing page (Hero) is locked to exactly one viewport in both its
+   home and projects views, so the grid is always visible. */
 .wave-grid-canvas {
   position: fixed;
   inset: 0;
@@ -120,6 +121,13 @@ a {
   flex-direction: column;
   justify-content: center;
   padding: 96px 24px 64px;
+  transition: padding-top 450ms ease;
+}
+
+/* Projects view docks the banner near the top, so the big top inset used
+   to center it in the home view shrinks. */
+.hero[data-view='projects'] {
+  padding-top: 32px;
 }
 
 @media (min-width: 1200px) {
@@ -146,6 +154,54 @@ a {
   max-width: 960px;
   margin: 0 auto;
   pointer-events: none;
+  /* Flex column so the view switch can animate flex-grow: in home view the
+     two spacers share the free space (banner centered, cards 0 tall); in
+     projects view the spacers drop to 0 and the card area takes it all.
+     min-height: 0 lets the card area shrink and scroll instead of
+     stretching the hero past one viewport. */
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__spacer {
+  flex: 1 1 0;
+  min-height: 0;
+  transition: flex-grow 450ms ease;
+}
+
+.hero[data-view='projects'] .hero__spacer {
+  flex-grow: 0;
+}
+
+.hero__glass {
+  flex: 0 0 auto;
+}
+
+/* Card area under the banner. Zero tall in home view (flex-grow 0, basis
+   0), fills the remaining space in projects view and scrolls internally.
+   visibility (not just opacity) takes the hidden cards out of tab order
+   and the accessibility tree; its transition is delayed on the way out so
+   the fade finishes before it flips. */
+.hero__projects {
+  flex: 0 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition: flex-grow 450ms ease, opacity 200ms ease,
+    visibility 0s linear 450ms;
+}
+
+.hero[data-view='projects'] .hero__projects {
+  flex-grow: 1;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: flex-grow 450ms ease, opacity 300ms ease 150ms,
+    visibility 0s;
 }
 
 @media (min-width: 1200px) {
@@ -174,6 +230,29 @@ a {
 .hero__name {
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   margin: 0 0 8px;
+  transition: font-size 450ms ease;
+}
+
+.hero[data-view='projects'] .hero__name {
+  font-size: 1.8rem;
+}
+
+/* Collapsing wrapper (grid 1fr to 0fr, same technique as
+   .project-card__expand) so the eyebrow and blurb fold away smoothly
+   instead of jumping when the banner compacts. */
+.hero__fold {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 450ms ease, opacity 300ms ease;
+}
+
+.hero__fold > div {
+  overflow: hidden;
+}
+
+.hero[data-view='projects'] .hero__fold {
+  grid-template-rows: 0fr;
+  opacity: 0;
 }
 
 .category-filter {
@@ -219,14 +298,25 @@ a {
   font-weight: 600;
 }
 
+/* The role line is always the CategoryFilter. In home view it is inert
+   (see Hero.jsx) and reads as plain text; in projects view it is the live
+   filter. */
 .hero__role {
   font-size: 1.25rem;
   margin: 0 0 20px;
+  transition: margin-bottom 450ms ease;
 }
 
-.projects__filter {
-  font-size: 0.95rem;
-  margin: 8px 0 0;
+.hero[data-view='home'] .hero__role .category-filter__button {
+  color: var(--text);
+}
+
+.hero[data-view='home'] .hero__role .category-filter__sep {
+  color: var(--text);
+}
+
+.hero[data-view='projects'] .hero__role {
+  margin-bottom: 14px;
 }
 
 .hero__blurb {
@@ -277,9 +367,7 @@ a {
 
 /* Footer re-establishes its own centered column, because on Home it
    lives inside the full-bleed .hero (see .hero .footer below), which
-   breaks out of main's max-width. On ProjectsPage, Footer is a plain
-   child of main again, so this is redundant-but-harmless there -
-   main's own max-width already centers it. */
+   breaks out of main's max-width. */
 .footer {
   max-width: 960px;
   margin-left: auto;
@@ -304,42 +392,18 @@ a {
   }
 }
 
-/* Projects is now the top of its own page (reached via BackLink/Hero
-   navigation, not scrolled to from a preceding section), so it relies
-   on main's own centering directly and doesn't need a divider border
-   above it. (About went back to being a slide-up card - see
-   .about-card below - so BackLink/this reasoning no longer applies to
-   it specifically, only to Projects.) */
-.page-back {
-  display: inline-block;
-  margin: 32px 0 0;
-  color: var(--text-dim);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.page-back:hover {
-  color: var(--accent);
-}
-
-/* Projects */
+/* Projects: lives inside .hero__projects (the scrolling card area under
+   the banner), so no page-level flex/padding of its own. Top/bottom
+   padding keeps card hover lift and shadow from being clipped by the
+   scroll container. */
 .projects {
-  flex: 1 0 auto;
-  padding-top: 24px;
-  padding-bottom: 80px;
-}
-
-.projects__hint {
-  color: var(--text-dim);
-  margin-top: -8px;
-  font-size: 0.9rem;
+  padding: 8px 0 24px;
 }
 
 .projects__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
-  margin-top: 24px;
   align-items: start;
 }
 
@@ -402,15 +466,49 @@ a {
   font-size: 0.95rem;
 }
 
-/* Just the preview image; the description/tags below it (.project-card__expand)
-   use the same height-collapse expand as a thumbnail-less card, so hovering
-   never introduces internal scrolling - the card grows instead. */
-.project-card__thumb {
-  aspect-ratio: 3 / 2;
+/* Cards with a snapshot: the text (.project-card__expand--overlay) and the
+   thumbnail share one box. The thumbnail sits on top of the text; on hover
+   the box grows to fit the text while the thumbnail dissolves to fully
+   transparent, revealing the text in the same space. Resting height is the
+   old 3:2 thumbnail height (cqw = % of .project-card's content width).
+   --expand-h is the measured text height, set in ProjectCard.jsx. */
+.project-card {
+  container-type: inline-size;
+}
+
+.project-card__media {
+  position: relative;
   margin-top: 14px;
+  height: calc(100cqw * 2 / 3);
   border-radius: 8px;
   overflow: hidden;
-  background: var(--bg);
+  transition: height 250ms ease;
+}
+
+.project-card:hover .project-card__media,
+.project-card:focus-visible .project-card__media {
+  height: max(calc(100cqw * 2 / 3), var(--expand-h, 0px));
+}
+
+/* No background: the canvas dissolves to transparent, so whatever shows
+   through is the text underneath, not a dark fill. */
+.project-card__thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.project-card__expand--overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  grid-template-rows: 1fr;
+}
+
+.project-card__expand--overlay .project-card__description {
+  margin-top: 0;
 }
 
 .project-card__thumb-canvas {
@@ -477,6 +575,19 @@ a {
     grid-template-rows: 1fr;
     opacity: 1;
   }
+
+  .project-card__media {
+    transition: none;
+  }
+
+  .hero,
+  .hero__spacer,
+  .hero__projects,
+  .hero__name,
+  .hero__fold,
+  .hero__role {
+    transition: none;
+  }
 }
 
 /* Footer */
@@ -514,10 +625,46 @@ a {
    of the viewport height rather than a small corner widget - `top` and
    `bottom` are both set so the height stretches to fill the space
    between them, growing with the viewport instead of a fixed number.
-   Dismissing on an outside click is handled in JS via a document
-   mousedown listener (SlideUpPanel.jsx), not a full-screen click-catching
-   div - a div like that would sit above the whole page and intercept
-   clicks meant for Hero's own buttons underneath it. */
+   It stays open until the X, its own trigger button (a toggle in
+   Hero.jsx), or Escape closes it; there is no outside-click dismissal and
+   no full-screen overlay, so the page underneath stays clickable. */
+/* Shared glass surface for .slide-panel and the hero text pane.
+   Embossed glass: a strong blur so the wave-grid animation reads as
+   frosted motion rather than a sharp image, a soft diagonal sheen
+   (the gradient layer) suggesting light catching the pane, and inset
+   highlight lines along the top/left edges - the two together are
+   what sell "a pane of glass" rather than just "a translucent box". */
+.slide-panel,
+.hero__glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 45%),
+    color-mix(in srgb, var(--bg-soft) 55%, transparent);
+  backdrop-filter: blur(36px) saturate(180%);
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 24px;
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Wraps the hero copy so it sits on a frosted pane instead of directly on
+   the wave grid. The negative left margin cancels the left padding so the
+   text keeps its original left edge (and lines up with the footer). */
+.hero__glass {
+  width: fit-content;
+  max-width: 100%;
+  padding: 32px 40px;
+  margin-left: -40px;
+}
+
+@media (max-width: 700px) {
+  .hero__glass {
+    padding: 20px 24px;
+    margin-left: 0;
+  }
+}
+
 .slide-panel {
   position: fixed;
   z-index: 100;
@@ -526,22 +673,7 @@ a {
   bottom: 64px;
   width: min(760px, 46vw);
   overflow-y: auto;
-  /* Embossed glass: a strong blur so the wave-grid animation reads as
-     frosted motion rather than a sharp image, a soft diagonal sheen
-     (the gradient layer) suggesting light catching the pane, and inset
-     highlight lines along the top/left edges - the two together are
-     what sell "a pane of glass" rather than just "a translucent box". */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 45%),
-    color-mix(in srgb, var(--bg-soft) 55%, transparent);
-  backdrop-filter: blur(36px) saturate(180%);
-  -webkit-backdrop-filter: blur(36px) saturate(180%);
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-  border-radius: 24px;
   padding: 40px;
-  box-shadow:
-    0 24px 60px -24px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 1px 0 0 rgba(255, 255, 255, 0.18);
   transform: translateY(calc(100% + 96px));
   transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -553,7 +685,8 @@ a {
 /* Browsers without backdrop-filter support get a solid panel instead of
    a see-through one with no blur (which would be unreadable). */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .slide-panel {
+  .slide-panel,
+  .hero__glass {
     background: var(--bg-soft);
   }
 }
@@ -603,6 +736,10 @@ a {
 .about-card__body {
   color: var(--text-dim);
   margin: 0;
+}
+
+.about-card__body + .about-card__body {
+  margin-top: 14px;
 }
 
 /* Contact card content */

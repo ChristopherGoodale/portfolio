@@ -1,28 +1,11 @@
-import { useState } from 'react'
 import { projects } from '../../data/projects.js'
 import ProjectCard from '../project/ProjectCard.jsx'
-import CategoryFilter from '../project/CategoryFilter.jsx'
 
-export default function Projects() {
-  const [pinnedCategory, setPinnedCategory] = useState(null)
-  const [hoveredCategory, setHoveredCategory] = useState(null)
-  const activeCategory = hoveredCategory ?? pinnedCategory
-
-  function toggleCategory(category) {
-    setPinnedCategory((current) => (current === category ? null : category))
-  }
-
+// Grid only: the role filter lives in Hero's banner, which owns
+// activeCategory and passes it down.
+export default function Projects({ activeCategory }) {
   return (
     <section className="projects" id="projects">
-      <h2>Featured Projects</h2>
-      <p className="projects__hint">Hover a card to expand it.</p>
-      <CategoryFilter
-        activeCategory={activeCategory}
-        pinnedCategory={pinnedCategory}
-        onCategoryHover={setHoveredCategory}
-        onCategoryToggle={toggleCategory}
-        className="projects__filter"
-      />
       <div className="projects__grid">
         {projects.map((project) => (
           <ProjectCard

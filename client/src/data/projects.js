@@ -55,6 +55,16 @@ const rawProjects = [
     repo: 'https://github.com/ChristopherGoodale/prediction_arbitrage_bot',
   },
   {
+    title: 'Airbnb Analysis',
+    tagline: 'What drives NYC Airbnb prices, from PCA to regression',
+    description:
+      'An end-to-end analysis of NYC Airbnb listings: cleans and imputes the raw data, ranks the factors behind nightly price with PCA, and cross-checks them with OLS, Ridge, and Lasso regression. Published as an interactive Streamlit app with ranked-factor charts, borough concentration and a map, and a data explorer.',
+    tags: ['Python', 'Streamlit', 'scikit-learn'],
+    categories: ['Data Specialist'],
+    link: 'https://airbnb-analysis-arvavfn4sdwytzerirtfj7.streamlit.app/',
+    repo: 'https://github.com/ChristopherGoodale/airbnb-analysis',
+  },
+  {
     title: 'Habit / Task Tracker',
     tagline: 'Full-stack CRUD, no framework magic',
     description:

@@ -67,7 +67,9 @@ export default function ProjectThumbnail({ src, isActive }) {
 
   function applyProgress() {
     const canvas = canvasRef.current
-    const progress = progressRef.current
+    // Clamped so a stray out-of-range value can never index outside STEPS
+    // (STEPS[-1] is undefined, which poisons drawFrame's size math).
+    const progress = Math.min(1, Math.max(0, progressRef.current))
     if (canvas) canvas.style.opacity = String(1 - progress)
     const stepIndex = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length))
     if (stepIndex !== lastStepRef.current) {
@@ -78,9 +80,16 @@ export default function ProjectThumbnail({ src, isActive }) {
 
   function ensureLoopRunning() {
     if (rafRef.current) return
-    let last = performance.now()
+    let last = null
     const tick = (now) => {
-      const dt = now - last
+      // This frame's id has fired, so clear it first: if anything below
+      // throws, the guard in ensureLoopRunning must not keep seeing a stale
+      // id and block every future hover animation for this card.
+      rafRef.current = null
+      // First tick has no previous timestamp; later ticks clamp dt so a
+      // timestamp that runs slightly backwards can't push progress out of
+      // [0, 1].
+      const dt = last === null ? 0 : Math.max(0, now - last)
       last = now
       const delta = dt / DURATION_MS
       const target = targetRef.current
@@ -88,8 +97,9 @@ export default function ProjectThumbnail({ src, isActive }) {
       if (progress < target) progressRef.current = Math.min(target, progress + delta)
       else if (progress > target) progressRef.current = Math.max(target, progress - delta)
       applyProgress()
-      rafRef.current =
-        progressRef.current !== targetRef.current ? requestAnimationFrame(tick) : null
+      if (progressRef.current !== targetRef.current) {
+        rafRef.current = requestAnimationFrame(tick)
+      }
     }
     rafRef.current = requestAnimationFrame(tick)
   }

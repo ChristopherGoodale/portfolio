@@ -7,10 +7,12 @@ function readCssVar(name) {
 // Base/high colors for the wave shader, sourced from the portfolio's own
 // theme variables (index.css) instead of hardcoding the reference's white/blue,
 // so the effect stays on-brand and follows light/dark mode.
+// colorHigh uses --wave-accent, not --accent: in dark mode the text accent is
+// a bright mint that washes out the light hero text when it lands on the peaks.
 export function readThemeColors() {
   return {
     colorBase: new THREE.Color(readCssVar('--bg-soft') || '#171a21'),
-    colorHigh: new THREE.Color(readCssVar('--accent') || '#6ee7b7'),
+    colorHigh: new THREE.Color(readCssVar('--wave-accent') || '#2f7f62'),
   }
 }
 

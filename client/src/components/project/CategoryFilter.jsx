@@ -6,9 +6,11 @@ export default function CategoryFilter({
   onCategoryHover,
   onCategoryToggle,
   className,
+  inert,
 }) {
   return (
     <div
+      inert={inert}
       className={`category-filter${className ? ` ${className}` : ''}`}
       role="group"
       aria-label="Filter projects by role"
