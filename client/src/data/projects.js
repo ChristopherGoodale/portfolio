@@ -26,9 +26,9 @@ const snapshotsBySlug = Object.fromEntries(
 const rawProjects = [
   {
     title: 'Axiom Automation',
-    tagline: 'Website for my own automation and consulting LLC',
+    tagline: 'Marketing site for an automation consulting firm',
     description:
-      'The public site for Axiom Automation LLC, the company I own. A static Astro and Tailwind CSS v4 build deployed to GitHub Pages, covering services (consulting, process automation, data and analytics, financial services, AI integration, custom software, implementation), a team page driven by a JSON file so adding a member needs no code change, and a contact form that posts to Web3Forms and emails the business address.',
+      'A public marketing site designed and built for Axiom Automation LLC, an automation and consulting firm. A static Astro and Tailwind CSS v4 build deployed to GitHub Pages, covering the firm\'s services (consulting, process automation, data and analytics, financial services, AI integration, custom software, implementation), a team page driven by a JSON file so adding a member needs no code change, and a contact form that posts to Web3Forms and emails the business address.',
     tags: ['Astro', 'Tailwind', 'GitHub Pages'],
     categories: ['Engineer'],
     link: 'https://axiom-automation-llc.github.io',

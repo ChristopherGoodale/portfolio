@@ -28,3 +28,7 @@ Fixes, all in the same file:
 * The tick clears `rafRef.current` first, so a throw can never leave a stale id behind.
 * The first tick uses `dt = 0` and later ticks use `Math.max(0, now - last)`.
 * `applyProgress` clamps progress to 0 to 1 before indexing `STEPS`.
+
+## Follow-up: tags moved above the thumbnail
+
+The tag pills used to live in the hover-reveal text layer. They now render directly under the tagline, always visible, on every card (including the no-thumbnail Three-Statement card). The text layer holds only the description and the call-to-action link, so the measured `--expand-h` is about one tag row shorter and the open card grows slightly less. Cost: each resting card is about 40px taller.

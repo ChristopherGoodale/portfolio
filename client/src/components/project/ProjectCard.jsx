@@ -29,13 +29,6 @@ export default function ProjectCard({ project, isDimmed }) {
       className={`project-card__expand${snapshot ? ' project-card__expand--overlay' : ''}`}
     >
       <p className="project-card__description">{description}</p>
-      <div className="project-card__tags">
-        {tags.map((tag) => (
-          <span className="project-card__tag" key={tag}>
-            {tag}
-          </span>
-        ))}
-      </div>
       <span className="project-card__cta">
         {isRepoOnly ? 'View on GitHub →' : 'View live demo →'}
       </span>
@@ -62,6 +55,13 @@ export default function ProjectCard({ project, isDimmed }) {
         </span>
       </div>
       <p className="project-card__tagline">{tagline}</p>
+      <div className="project-card__tags">
+        {tags.map((tag) => (
+          <span className="project-card__tag" key={tag}>
+            {tag}
+          </span>
+        ))}
+      </div>
 
       {snapshot ? (
         <div className="project-card__media">
