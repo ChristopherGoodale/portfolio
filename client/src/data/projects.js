@@ -31,7 +31,7 @@ const rawProjects = [
       'A public marketing site designed and built for Axiom Automation LLC, an automation and consulting firm. A static Astro and Tailwind CSS v4 build deployed to GitHub Pages, covering the firm\'s services (consulting, process automation, data and analytics, financial services, AI integration, custom software, implementation), a team page driven by a JSON file so adding a member needs no code change, and a contact form that posts to Web3Forms and emails the business address.',
     tags: ['Astro', 'Tailwind', 'GitHub Pages'],
     categories: ['Engineer'],
-    link: 'https://axiom-automation-llc.github.io',
+    link: 'https://axiom-automation-llc-github-io.christophergdale.workers.dev/',
     repo: 'https://github.com/Axiom-Automation-LLC/Axiom-Automation-LLC.github.io',
   },
   {
