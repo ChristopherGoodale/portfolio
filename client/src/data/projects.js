@@ -25,6 +25,16 @@ const snapshotsBySlug = Object.fromEntries(
 
 const rawProjects = [
   {
+    title: 'Spherical Cow Hurricane',
+    tagline: 'A hurricane simulation run on quant-finance numerics',
+    description:
+      'A browser hurricane simulation built on the numerical methods used in quantitative finance. The wind field is the Holland (1980) gradient-wind profile, debris is a Monte Carlo cloud of tracers integrated with RK2, gusts follow an Ornstein-Uhlenbeck (Vasicek) process, and a Crank-Nicolson option pricer is validated against Black-Scholes. Rendered with three.js WebGPU, falling back to WebGL2, and shipped with a model validation report written in the style of a bank model review. There is also a cow. It is spherical.',
+    tags: ['TypeScript', 'three.js', 'Monte Carlo'],
+    categories: ['Finance', 'Engineer'],
+    link: 'https://spherical-cow-hurricane.pages.dev/',
+    repo: 'https://github.com/ChristopherGoodale/spherical-cow-hurricane',
+  },
+  {
     title: 'Axiom Automation',
     tagline: 'Marketing site for an automation consulting firm',
     description:
