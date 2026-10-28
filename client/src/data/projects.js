@@ -25,6 +25,16 @@ const snapshotsBySlug = Object.fromEntries(
 
 const rawProjects = [
   {
+    title: 'ComfyUI MCP Server',
+    tagline: 'Letting Claude generate images on a self-hosted GPU',
+    description:
+      'A Python Model Context Protocol (MCP) server that lets AI coding agents generate images on a self-hosted ComfyUI GPU tower over Tailscale and save them straight into the workspace that asked. Each model is a drop-in workflow file with prompt placeholders, so adding SDXL, Flux, or Qwen-Image needs no code change. ComfyUI has no authentication, so it listens only on the tailnet. Includes a negative prompt argument, added after writing "no figures" in the prompt still put people in 2 of 4 images and negative conditioning brought that to 0 of 7.',
+    tags: ['MCP', 'Python', 'ComfyUI'],
+    categories: ['Engineer'],
+    link: 'https://github.com/ChristopherGoodale/comfy_mcp',
+    repo: 'https://github.com/ChristopherGoodale/comfy_mcp',
+  },
+  {
     title: 'Spherical Cow Hurricane',
     tagline: 'A hurricane simulation run on quant-finance numerics',
     description:
