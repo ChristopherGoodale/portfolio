@@ -25,6 +25,17 @@ const snapshotsBySlug = Object.fromEntries(
 
 const rawProjects = [
   {
+    title: 'Financial Data Warehouse',
+    tagline: 'One checked source of market data for every project',
+    description:
+      'A central database of stock and options price history that my other projects draw from, so every analysis starts from the same verified numbers. It loads QuantConnect market data into PostgreSQL, adjusts prices for splits and dividends, and runs data quality checks every night. To prove the data is right, a trading backtest run on the warehouse produces exactly the same 23 trades as one run on QuantConnect\'s own data. AI assistants and other tools read it through a read-only MCP server over a private network. Built with Python, PostgreSQL, Docker and QuantConnect LEAN.',
+    tags: ['PostgreSQL', 'Python', 'QuantConnect'],
+    categories: ['Data Specialist', 'Finance'],
+    // Private repo: no link, so the card renders without one.
+    link: null,
+    repo: null,
+  },
+  {
     title: 'ComfyUI MCP Server',
     tagline: 'Letting Claude generate images on a self-hosted GPU',
     description:

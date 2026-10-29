@@ -420,6 +420,11 @@ a {
     box-shadow 200ms ease, opacity 200ms ease;
 }
 
+/* Cards without a link (private repos) are not clickable. */
+div.project-card {
+  cursor: default;
+}
+
 .project-card:hover,
 .project-card:focus-visible {
   border-color: var(--accent);

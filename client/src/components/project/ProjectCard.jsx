@@ -4,6 +4,17 @@ import ProjectThumbnail from './ProjectThumbnail.jsx'
 export default function ProjectCard({ project, isDimmed }) {
   const { title, tagline, description, tags, link, repo, snapshot } = project
   const isRepoOnly = link === repo
+  // Private repos have no link: render a plain, focusable card instead of an
+  // anchor so it does not lead visitors to a GitHub 404.
+  const Tag = link ? 'a' : 'div'
+  const linkProps = link
+    ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
+    : { tabIndex: 0 }
+  const cta = !link
+    ? 'Repo available on request'
+    : isRepoOnly
+      ? 'View on GitHub →'
+      : 'View live demo →'
   const [isHovered, setIsHovered] = useState(false)
   const cardRef = useRef(null)
   const textRef = useRef(null)
@@ -29,20 +40,16 @@ export default function ProjectCard({ project, isDimmed }) {
       className={`project-card__expand${snapshot ? ' project-card__expand--overlay' : ''}`}
     >
       <p className="project-card__description">{description}</p>
-      <span className="project-card__cta">
-        {isRepoOnly ? 'View on GitHub →' : 'View live demo →'}
-      </span>
+      <span className="project-card__cta">{cta}</span>
     </div>
   )
 
   return (
-    <a
+    <Tag
       ref={cardRef}
       className="project-card"
       data-dimmed={isDimmed || undefined}
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...linkProps}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsHovered(true)}
@@ -50,9 +57,11 @@ export default function ProjectCard({ project, isDimmed }) {
     >
       <div className="project-card__head">
         <h3>{title}</h3>
-        <span className="project-card__arrow" aria-hidden="true">
-          ↗
-        </span>
+        {link && (
+          <span className="project-card__arrow" aria-hidden="true">
+            ↗
+          </span>
+        )}
       </div>
       <p className="project-card__tagline">{tagline}</p>
       <div className="project-card__tags">
@@ -73,6 +82,6 @@ export default function ProjectCard({ project, isDimmed }) {
       ) : (
         expandContent
       )}
-    </a>
+    </Tag>
   )
 }
