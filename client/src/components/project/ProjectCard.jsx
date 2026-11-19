@@ -10,11 +10,14 @@ export default function ProjectCard({ project, isDimmed }) {
   const linkProps = link
     ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
     : { tabIndex: 0 }
-  const cta = !link
-    ? 'Repo available on request'
-    : isRepoOnly
-      ? 'View on GitHub →'
-      : 'View live demo →'
+  // A project can name its own call to action; otherwise it follows the link.
+  const cta =
+    project.cta ??
+    (!link
+      ? 'Repo available on request'
+      : isRepoOnly
+        ? 'View on GitHub →'
+        : 'View live demo →')
   // Public demo, private source: the card links to the demo and says the
   // code can be shown on request.
   const sourceNote = link && !repo ? 'Source code available on request' : null
