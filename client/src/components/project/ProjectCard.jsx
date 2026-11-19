@@ -15,6 +15,9 @@ export default function ProjectCard({ project, isDimmed }) {
     : isRepoOnly
       ? 'View on GitHub →'
       : 'View live demo →'
+  // Public demo, private source: the card links to the demo and says the
+  // code can be shown on request.
+  const sourceNote = link && !repo ? 'Source code available on request' : null
   const [isHovered, setIsHovered] = useState(false)
   const cardRef = useRef(null)
   const textRef = useRef(null)
@@ -41,6 +44,9 @@ export default function ProjectCard({ project, isDimmed }) {
     >
       <p className="project-card__description">{description}</p>
       <span className="project-card__cta">{cta}</span>
+      {sourceNote && (
+        <span className="project-card__source">{sourceNote}</span>
+      )}
     </div>
   )
 

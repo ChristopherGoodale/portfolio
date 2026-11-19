@@ -569,6 +569,13 @@ div.project-card {
   font-size: 0.9rem;
 }
 
+.project-card__source {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-card,
   .button,
