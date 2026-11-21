@@ -25,6 +25,16 @@ const snapshotsBySlug = Object.fromEntries(
 
 const rawProjects = [
   {
+    title: 'Edge Decision Graph',
+    tagline: 'How edge ML and knowledge graphs make explainable decisions',
+    description:
+      'An interactive 3D concept mockup of five businesses (credit, sports betting, insurance, retail and logistics) using edge machine learning and knowledge graphs to make fast AI decisions they can explain afterwards. Each business builds its own graph from one shared set of node types. Small models on phones, card terminals, cars and trucks make the quick calls in milliseconds, regulated lending decisions go to a validated underwriting model, learning stays inside each business, and every decision leaves a trail of the signals and rules behind it. Built with three.js, with an 8-step guided walkthrough. All data is mock.',
+    tags: ['three.js', 'Knowledge Graph', 'Edge ML'],
+    categories: ['Data Specialist', 'Engineer'],
+    link: 'https://christophergoodale.github.io/edge_decision_graph/',
+    repo: 'https://github.com/ChristopherGoodale/edge_decision_graph',
+  },
+  {
     title: 'Financial Data Warehouse',
     tagline: 'One checked source of market data for every project',
     description:
