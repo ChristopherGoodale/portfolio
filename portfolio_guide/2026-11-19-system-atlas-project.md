@@ -5,7 +5,6 @@
 **Public demo, private source.** System Atlas reads the warehouse, the trading lab and the alerting repos, which are private. The user wanted the demo to be clickable and the code kept private, available on request. So the built site alone is published:
 - A separate public repo, `ChristopherGoodale/system_atlas`, holds only the built site: minified JS, CSS and a redacted `snapshot.json`.
 - It is served on GitHub Pages at `christophergoodale.github.io/system_atlas/`.
-- The source repo never leaves the tower.
 
 The card therefore has a `link` and `repo: null`. The portfolio repo gets no build files.
 
